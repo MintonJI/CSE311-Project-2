@@ -12,12 +12,12 @@ public class PrimeFactor {
      * @param args
      */
     public static void main(String[] args) {
-        final BigInteger example = new BigInteger("123456789");
+        final BigInteger example = new BigInteger("1234567890");
         BigInteger exampleTested = example;
         BigInteger result = BigInteger.ONE;
 
         // Contains a list of the computed factors. Used for printing at the end of the method.
-        ArrayList<BigInteger> factors = new ArrayList<BigInteger>();
+        ArrayList<BigInteger> factors = new ArrayList<>();
 
         /*
          While the results of the factoring isn't null, keep finding factors.
@@ -80,7 +80,7 @@ public class PrimeFactor {
         }
 
         // If the factor is the same as the input number, computation failed.
-        if (d == input) {
+        if (d.equals(input)) {
             return null;
         } else {
             return d;
@@ -109,7 +109,5 @@ public class PrimeFactor {
     public static BigInteger gcd(BigInteger a, BigInteger input) {
         return input.equals(BigInteger.ZERO) ? a : gcd(input, a.remainder(input));
     }
-
-    ;
 
 }

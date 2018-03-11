@@ -15,8 +15,8 @@ public class PrimeServerB {
      *
      * @param args
      */
-    public static void main(String[] args) throws IOException {
-
+    public static void main(String[] args) {
+        args = new String[]{"" + 1025};
         if (args.length != 1) {
             System.err.println("Usage: java EchoServer <port number>");
             System.exit(1);
@@ -32,12 +32,12 @@ public class PrimeServerB {
                 PrintWriter out =
                         new PrintWriter(serverSocketA.getOutputStream(), true);
                 BufferedReader in = new BufferedReader(
-                        new InputStreamReader(serverSocketA.getInputStream()));
+                        new InputStreamReader(serverSocketA.getInputStream()))
         ) {
             String inputLine;
             BigInteger startNum;
             BigInteger endNum;
-            ArrayList<BigInteger> factors = new ArrayList<BigInteger>();
+            ArrayList<BigInteger> factors;
             inputLine = in.readLine();
             startNum = new BigInteger(inputLine);
 
@@ -65,7 +65,7 @@ public class PrimeServerB {
         BigInteger result = BigInteger.valueOf(1);
 
         // Contains a list of the computed factors. Used for printing at the end of the method.
-        ArrayList<BigInteger> factors = new ArrayList<BigInteger>();
+        ArrayList<BigInteger> factors = new ArrayList<>();
 
         /*
          While the results of the factoring isn't null, keep finding factors.
@@ -117,7 +117,7 @@ public class PrimeServerB {
         }
 
         // If the factor is the same as the input number, computation failed.
-        if (d == endNum) {
+        if (d.equals(endNum)) {
             return null;
         } else {
             return d;

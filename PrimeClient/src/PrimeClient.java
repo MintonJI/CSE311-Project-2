@@ -40,16 +40,17 @@ import java.util.ArrayList;
 
 public class PrimeClient {
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
 
+//        Ensures that the proper argument are passed to the program
         if (args.length != 2) {
             System.err.println(
                     "Usage: java EchoClient <host name> <port number>");
-            System.exit(1);
+            System.exit(1); // Kills the server if not
         }
 
         String hostName = args[0];
-        int portNumber = Integer.parseInt(args[1]);
+        int portNumber = Integer.parseInt(args[1]); // Gets the port number as an int
 
         try (
                 Socket echoSocket = new Socket(hostName, portNumber);
@@ -65,7 +66,8 @@ public class PrimeClient {
             String userInput;
             while ((userInput = stdIn.readLine()) != null) {
                 out.println(userInput);
-                System.out.println(">>> " + in.readLine());
+                System.out.println(">> Factors: " + in.readLine());
+                System.out.println(">> Input: " + userInput);
             }
         } catch (UnknownHostException e) {
             System.err.println("Don't know about host " + hostName);
@@ -73,6 +75,7 @@ public class PrimeClient {
         } catch (IOException e) {
             System.err.println("Couldn't get I/O for the connection to " +
                     hostName);
+            e.printStackTrace();
             System.exit(1);
         }
     }
