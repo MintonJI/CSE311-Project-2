@@ -17,7 +17,7 @@ public class PrimeServerA {
      */
     public static void main(String[] args) {
 
-        args[0] = "" + 1024;
+        args = new String[]{"" + 1024};
         if (args.length != 1) {
             System.err.println("Usage: java EchoServer <port number>");
             System.exit(1);
@@ -26,7 +26,7 @@ public class PrimeServerA {
         int portNumber = Integer.parseInt(args[0]);
 //        final String HOSTNAME = "ceclnx01.cec.miamiOH.edu";
 //        final String HOSTNAME = "127.0.0.1"; //TODO change eventually
-        final String HOSTNAME = "ubuntu@172.17.31.233"; //TODO change eventually
+        final String HOSTNAME = "172.17.31.233"; //TODO change eventually
 
         try (
                 ServerSocket serverSocket =
@@ -108,7 +108,7 @@ public class PrimeServerA {
 
         } catch (IOException e) {
             System.out.println("Exception caught when trying to listen on port "
-                    + portNumber + "or listening for a connection");
+                    + portNumber + " or listening for a connection");
             System.out.println(e.getMessage());
             e.printStackTrace();
         }
