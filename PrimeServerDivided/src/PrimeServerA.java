@@ -25,7 +25,8 @@ public class PrimeServerA {
 
         int portNumber = Integer.parseInt(args[0]);
 //        final String HOSTNAME = "ceclnx01.cec.miamiOH.edu";
-        final String HOSTNAME = "127.0.0.1"; //TODO change eventually
+//        final String HOSTNAME = "127.0.0.1"; //TODO change eventually
+        final String HOSTNAME = "ubuntu@172.17.31.233"; //TODO change eventually
 
         try (
                 ServerSocket serverSocket =
