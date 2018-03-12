@@ -12,6 +12,15 @@ import java.util.ArrayList;
 
 public class PrimeServer {
 
+    /**
+     * Establishes a socket connection with a client (using a user-specified port) and
+     * accepts user input (a BigInteger) from the client (PrimeClient.java). When the server
+     * receives the input, it will compute the prime factorization and send the output
+     * to the client.
+     *
+     * @param args
+     * @throws IOException
+     */
     public static void main(String[] args) {
 
         if (args.length != 1) {
@@ -24,22 +33,33 @@ public class PrimeServer {
         try (
                 ServerSocket serverSocket =
                         new ServerSocket(Integer.parseInt(args[0]));
+
+                // Waits until connection is established with the client.
                 Socket clientSocket = serverSocket.accept();
+
+                // Initializes PrintWriter object for output.
                 PrintWriter out =
                         new PrintWriter(clientSocket.getOutputStream(), true);
+
+                // Initializes BufferedReader objects for input.
                 BufferedReader in = new BufferedReader(
                         new InputStreamReader(clientSocket.getInputStream()))
         ) {
             String inputLine;
             BigInteger inputNum;
+
+            // A list of all of the factors of the input.
             ArrayList<BigInteger> factors;
             inputLine = in.readLine();
             inputNum = new BigInteger(inputLine);
+
+            // Receives a list of factors from the factorer.
             factors = factorer(inputNum);
 
-
+            // Gets the lastFactor of the list. Used for formatting during printing.
             BigInteger lastFactor = factors.get(factors.size() - 1);
 
+            // Prints all the factors of the list fot the client.
             for (BigInteger f : factors) {
                 if (!f.equals(lastFactor)) {
                     out.print(f + " * ");
@@ -55,6 +75,11 @@ public class PrimeServer {
         }
     }
 
+    /**
+     * This method adds the computed factors to the final list of factors.
+     * @param input The client's BigInteger object that will be factored.
+     * @return
+     */
     public static ArrayList<BigInteger> factorer(BigInteger input) {
 
         BigInteger inputEdit = input;
@@ -127,13 +152,14 @@ public class PrimeServer {
      * @param x
      * @param input
      * @return
+     * @return
      */
     public static BigInteger g(BigInteger x, BigInteger input) {
         return (x.pow(2).add(BigInteger.ONE).remainder(input));
     }
 
     /**
-     * Part of Pollard's rho algorithm.
+     * Part of Pollard's rho algorithm. Computes the Greatest Common Denominator of the input.
      *
      * @param a
      * @param input

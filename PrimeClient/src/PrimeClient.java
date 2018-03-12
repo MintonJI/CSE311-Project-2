@@ -41,6 +41,10 @@ import java.util.ArrayList;
 public class PrimeClient {
 
     /**
+     * Establishes a socket connection with a server (using a user-specified hostname and port) and
+     * sends user input (a BigInteger) to the server (PrimeServer.java). When the server receives
+     * the input, it will compute the prime factorization and send the output to the client who
+     * will then print it.
      * @param args
      * @throws IOException
      */
@@ -56,9 +60,14 @@ public class PrimeClient {
         int portNumber = Integer.parseInt(args[1]);
 
         try (
+                // Establishes connection with the specified server.
                 Socket echoSocket = new Socket(hostName, portNumber);
+
+                // Initializes PrintWriter object for output.
                 PrintWriter out =
                         new PrintWriter(echoSocket.getOutputStream(), true);
+
+                // Initializes BufferedReader objects for input.
                 BufferedReader in =
                         new BufferedReader(
                                 new InputStreamReader(echoSocket.getInputStream()));
@@ -68,7 +77,11 @@ public class PrimeClient {
         ) {
             String userInput;
             while ((userInput = stdIn.readLine()) != null) {
+
+                // Sends user input to server.
                 out.println(userInput);
+
+                // Prints the prime factorization.
                 System.out.println(">>> " + in.readLine());
             }
         } catch (UnknownHostException e) {
