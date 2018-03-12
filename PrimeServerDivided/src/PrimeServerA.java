@@ -15,15 +15,18 @@ public class PrimeServerA {
      *
      * @param args
      */
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
 
+        args = new String[]{"" + 1024};
         if (args.length != 1) {
             System.err.println("Usage: java EchoServer <port number>");
             System.exit(1);
         }
 
         int portNumber = Integer.parseInt(args[0]);
-        final String HOSTNAME = "ceclnx01.cec.miamiOH.edu";
+//        final String HOSTNAME = "ceclnx01.cec.miamiOH.edu";
+//        final String HOSTNAME = "127.0.0.1"; //TODO change eventually
+        final String HOSTNAME = "172.17.31.233"; //TODO change eventually
 
         try (
                 ServerSocket serverSocket =
@@ -37,12 +40,29 @@ public class PrimeServerA {
                         new PrintWriter(clientSocket.getOutputStream(), true);
                 BufferedReader in = new BufferedReader(
                         new InputStreamReader(clientSocket.getInputStream()));
+
+                PrintWriter out2 =
+                        new PrintWriter(serverSocketB.getOutputStream(), true);
+                BufferedReader in2 = new BufferedReader(
+                        new InputStreamReader(serverSocketB.getInputStream()));
+
+                PrintWriter out3 =
+                        new PrintWriter(serverSocketC.getOutputStream(), true);
+                BufferedReader in3 = new BufferedReader(
+                        new InputStreamReader(serverSocketC.getInputStream()));
+
+                PrintWriter out4 =
+                        new PrintWriter(serverSocketD.getOutputStream(), true);
+                BufferedReader in4 = new BufferedReader(
+                        new InputStreamReader(serverSocketD.getInputStream()))
         ) {
             String inputLine;
             BigInteger inputNum;
-            ArrayList<BigInteger> factors = new ArrayList<BigInteger>();
+            ArrayList<BigInteger> factors = new ArrayList<>();
             inputLine = in.readLine();
             inputNum = new BigInteger(inputLine);
+            String retNum;
+
 
                 /*
                 We're going to divide the original integer by three and send each pair of vars
@@ -59,6 +79,22 @@ public class PrimeServerA {
             BigInteger startNumD = endNumC.add(BigInteger.ONE);
             BigInteger endNumD = inputNum;
 
+//            Sends the input to the 4 servers
+            out2.println(startNumB);
+            out2.println(endNumB);
+            out3.println(startNumC);
+            out3.println(endNumC);
+            out4.println(startNumD);
+            out4.println(endNumD);
+            while ((retNum = in2.readLine()) != null) {
+                factors.add(new BigInteger(retNum));
+            }
+            while ((retNum = in3.readLine()) != null) {
+                factors.add(new BigInteger(retNum));
+            }
+            while ((retNum = in4.readLine()) != null) {
+                factors.add(new BigInteger(retNum));
+            }
 
             BigInteger lastFactor = factors.get(factors.size() - 1);
 
@@ -72,8 +108,9 @@ public class PrimeServerA {
 
         } catch (IOException e) {
             System.out.println("Exception caught when trying to listen on port "
-                    + portNumber + "or listening for a connection");
+                    + portNumber + " or listening for a connection");
             System.out.println(e.getMessage());
+            e.printStackTrace();
         }
     }
 }

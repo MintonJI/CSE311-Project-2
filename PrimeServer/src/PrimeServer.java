@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 public class PrimeServer {
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
 
         if (args.length != 1) {
             System.err.println("Usage: java EchoServer <port number>");
@@ -28,11 +28,11 @@ public class PrimeServer {
                 PrintWriter out =
                         new PrintWriter(clientSocket.getOutputStream(), true);
                 BufferedReader in = new BufferedReader(
-                        new InputStreamReader(clientSocket.getInputStream()));
+                        new InputStreamReader(clientSocket.getInputStream()))
         ) {
             String inputLine;
             BigInteger inputNum;
-            ArrayList<BigInteger> factors = new ArrayList<BigInteger>();
+            ArrayList<BigInteger> factors;
             inputLine = in.readLine();
             inputNum = new BigInteger(inputLine);
             factors = factorer(inputNum);
@@ -113,7 +113,7 @@ public class PrimeServer {
         }
 
         // If the factor is the same as the input number, computation failed.
-        if (d == input) {
+        if (d.equals(input)) {
             return null;
         } else {
             return d;
