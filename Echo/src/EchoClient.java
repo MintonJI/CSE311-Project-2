@@ -73,7 +73,7 @@ public class EchoClient {
 
                 // Sends user input to server.
                 out.println(userInput);
-                
+
                 System.out.println(">>> " + in.readLine());
             }
         } catch (UnknownHostException e) {
