@@ -33,6 +33,14 @@ import java.net.*;
 import java.io.*;
 
 public class EchoServer {
+    /**
+     * Establishes a socket connection with a client (using a user-specified port) and
+     * accepts user input (a String) from the client (EchoClient.java). When the server
+     * receives the input, it will echo it back to the client.
+     *
+     * @param args
+     * @throws IOException
+     */
     public static void main(String[] args) throws IOException {
 
         if (args.length != 1) {
@@ -45,14 +53,22 @@ public class EchoServer {
         try (
                 ServerSocket serverSocket =
                         new ServerSocket(Integer.parseInt(args[0]));
+
+                // Establishes connection with a client.
                 Socket clientSocket = serverSocket.accept();
+
+                // Initializes PrintWriter object for output.
                 PrintWriter out =
                         new PrintWriter(clientSocket.getOutputStream(), true);
+
+                // Initializes BufferedReader object for input.
                 BufferedReader in = new BufferedReader(
                         new InputStreamReader(clientSocket.getInputStream()));
         ) {
             String inputLine;
             while ((inputLine = in.readLine()) != null) {
+
+                // Sends result to client.
                 out.println(inputLine);
             }
         } catch (IOException e) {
