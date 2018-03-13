@@ -1,19 +1,68 @@
+package main;
 
 import java.math.BigInteger;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.InputMismatchException;
+import java.util.Scanner;
 
 public class PrimeFactor {
 
+
     /**
-     * Takes an input number of type BigInteger and calculates the prime factorization of it until the last factor
-     * is found. It then prints the factors.
-     *
+     * Asks the user to input a number that they want to factor. The input will be passed over
+     * to the factorer function. Afterward, all of the factors will be printed to the console.
      * @param args
      */
     public static void main(String[] args) {
-        final BigInteger example = new BigInteger("1234567890");
-        BigInteger exampleTested = example;
+        Scanner reader = new Scanner(System.in);
+        BigInteger input = BigInteger.ONE;
+
+        boolean inputError = false;
+
+        // If the user doesn't input a number, they will be given an error message.
+        do {
+            try {
+                System.out.println("Enter an integer: ");
+                input = reader.nextBigInteger();
+
+                inputError = false;
+            } catch (InputMismatchException e) {
+                System.err.println("This isn't an integer.\n");
+                inputError = true;
+                String badInput = reader.nextLine();
+                continue;
+            }
+        } while (inputError);
+
+        // The list of factors.
+        ArrayList<BigInteger> factors = new ArrayList<>();
+        factors = factorer(input);
+
+        /*
+        Prints all the factors of the input number.
+         */
+        System.out.print(input + ": = ");
+        BigInteger lastFactor = factors.get(factors.size() - 1);
+        for (BigInteger f : factors) {
+
+            if (!f.equals(lastFactor)) {
+                System.out.print(f + " * ");
+            } else {
+                System.out.println(f);
+            }
+        }
+    }
+
+    /**
+     * Takes an input number of type BigInteger and calculates the prime factorization of
+     * it until the last factor is found. It then prints the factors.
+     *
+     * @param input The user-inputted BigInteger they want to factor.
+     * @return
+     */
+    public static ArrayList<BigInteger> factorer(BigInteger input) {
+        BigInteger inputCalculations = input;
         BigInteger result = BigInteger.ONE;
 
         // Contains a list of the computed factors. Used for printing at the end of the method.
@@ -24,36 +73,24 @@ public class PrimeFactor {
          */
         do {
             // Divides the input number by the previously calculated factor.
-            exampleTested = exampleTested.divide(result);
+            inputCalculations = inputCalculations.divide(result);
 
             // The result of the Pollard's rho method.
-            result = polRho(exampleTested);
+            result = polRho(inputCalculations);
 
             /*
-            If the result isn't null, add it to the list. If it is null, then the factor currently in exampleTested
+            If the result isn't null, add it to the list. If it is null, then the factor currently in inputCalculations
             is the last possible factor. Add that value to the list of factors.
              */
             if (result != null) {
                 factors.add(result);
             } else {
-                factors.add(exampleTested);
+                factors.add(inputCalculations);
             }
 
         } while (result != null);
 
-        /*
-        Prints all the factors of the input number.
-         */
-        System.out.print(example + ": = ");
-        BigInteger lastFactor = factors.get(factors.size() - 1);
-        for (BigInteger f : factors) {
-
-            if (!f.equals(lastFactor)) {
-                System.out.print(f + " * ");
-            } else {
-                System.out.println(f);
-            }
-        }
+        return factors;
     }
 
     /**
