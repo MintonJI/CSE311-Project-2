@@ -1,5 +1,3 @@
-package main;
-
 import java.math.BigInteger;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -7,7 +5,6 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class PrimeFactor {
-
 
     /**
      * Asks the user to input a number that they want to factor. The input will be passed over
@@ -18,7 +15,7 @@ public class PrimeFactor {
         Scanner reader = new Scanner(System.in);
         BigInteger input = BigInteger.ONE;
 
-        boolean inputError = false;
+        boolean inputError = true;
 
         // If the user doesn't input a number, they will be given an error message.
         do {
@@ -26,7 +23,12 @@ public class PrimeFactor {
                 System.out.println("Enter an integer: ");
                 input = reader.nextBigInteger();
 
-                inputError = false;
+                if (input.signum() > 0) {
+                    inputError = false;
+                } else {
+                    System.out.println("Please input a number greater than 0.\n");
+                }
+
             } catch (InputMismatchException e) {
                 System.err.println("This isn't an integer.\n");
                 inputError = true;
@@ -34,6 +36,7 @@ public class PrimeFactor {
                 continue;
             }
         } while (inputError);
+        reader.close();
 
         // The list of factors.
         ArrayList<BigInteger> factors = new ArrayList<>();
@@ -146,5 +149,4 @@ public class PrimeFactor {
     public static BigInteger gcd(BigInteger a, BigInteger input) {
         return input.equals(BigInteger.ZERO) ? a : gcd(input, a.remainder(input));
     }
-
 }
