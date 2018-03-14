@@ -24,11 +24,10 @@ public class PrimeServerA {
         }
 
         int portNumber = Integer.parseInt(args[0]);
-//        final String HOSTNAME = "ceclnx01.cec.miamiOH.edu";
-//        final String HOSTNAME = "127.0.0.1"; //TODO change eventually
-        final String HOSTNAME = "172.17.31.233"; //TODO change eventually
+        final String HOSTNAME = "172.17.31.233"; // Hostname of openstack server
 
         try (
+//                Create the different sockets for each of the servers
                 ServerSocket serverSocket =
                         new ServerSocket(portNumber);
                 Socket clientSocket = serverSocket.accept();
@@ -36,6 +35,7 @@ public class PrimeServerA {
                 Socket serverSocketC = new Socket(HOSTNAME, 1026);
                 Socket serverSocketD = new Socket(HOSTNAME, 1027);
 
+//                 Each server has its own writer to write to as well as a reader to read back in from
                 PrintWriter out =
                         new PrintWriter(clientSocket.getOutputStream(), true);
                 BufferedReader in = new BufferedReader(
@@ -56,6 +56,7 @@ public class PrimeServerA {
                 BufferedReader in4 = new BufferedReader(
                         new InputStreamReader(serverSocketD.getInputStream()))
         ) {
+//            Necessary for the getting of factors
             String inputLine;
             BigInteger inputNum;
             ArrayList<BigInteger> factors = new ArrayList<>();
@@ -86,6 +87,8 @@ public class PrimeServerA {
             out3.println(endNumC);
             out4.println(startNumD);
             out4.println(endNumD);
+
+//            Reads the factors back from the server
             while ((retNum = in2.readLine()) != null) {
                 factors.add(new BigInteger(retNum));
             }
@@ -98,6 +101,7 @@ public class PrimeServerA {
 
             BigInteger lastFactor = factors.get(factors.size() - 1);
 
+//            Sends the factors back to the client to print out
             for (BigInteger f : factors) {
                 if (!f.equals(lastFactor)) {
                     out.print(f + " * ");

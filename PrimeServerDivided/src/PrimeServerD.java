@@ -27,36 +27,32 @@ public class PrimeServerD {
         int portNumber = Integer.parseInt(args[0]);
 
         try (
+                //                Create the different sockets for each of the servers
                 ServerSocket serverSocket =
-                        new ServerSocket(Integer.parseInt(args[0]));
+                        new ServerSocket(Integer.parseInt("1027"));
                 Socket serverSocketA = serverSocket.accept();
                 PrintWriter out =
                         new PrintWriter(serverSocketA.getOutputStream(), true);
                 BufferedReader in = new BufferedReader(
                         new InputStreamReader(serverSocketA.getInputStream()))
         ) {
+            // Necessary for the getting of factors
             String inputLine;
             BigInteger startNum;
             BigInteger endNum;
-            ArrayList<BigInteger> factors = new ArrayList<>();
+            ArrayList<BigInteger> factors;
             inputLine = in.readLine();
-            startNum = new BigInteger(inputLine);
 
+//            Reads the start and end limits from the server
+            startNum = new BigInteger(inputLine);
             inputLine = in.readLine();
             endNum = new BigInteger(inputLine);
 
+//            Calculates the factors between the start and end limits
             factors = factorer(startNum, endNum);
 
-            BigInteger lastFactor = factors.get(factors.size() - 1);
-
-          /*  for (BigInteger f : factors) {
-                if (!f.equals(lastFactor)) {
-                    out.print(f + " * ");
-                } else {
-                    out.println(f);
-                }
-            }*/
-
+//            BigInteger lastFactor = factors.get(factors.size() - 1);
+//            Send the factors back to Server A
             for (BigInteger f : factors) {
                 out.println(f);
             }
